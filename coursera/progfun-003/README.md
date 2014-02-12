@@ -1,4 +1,5 @@
-* Welcome
+Welcome
+=======
 
 Welcome to the Principles of Functional Programming in Scala class!
 
@@ -13,8 +14,8 @@ If you have questions or comments, please post to one of the forum threads. The 
 We hope that you find the class instructive and rewarding!
 Sun 15 Sep 2013 4:00 AM PDT
 
-* Course URL
-
+Course URL
+----------
 https://class.coursera.org/progfun-003
 
 
