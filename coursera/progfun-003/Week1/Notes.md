@@ -26,22 +26,23 @@ In a *wider* sense, a functional programming language enables the construction o
 An interactive shell lets one write expressions and responds with their value.
 
 ## Scala Function Definition Style
-```scala
-def *func*(*var1*: *TYPE*, *var2*: *TYPE*, ...): *RET_TYPE* = ...
+```Scala
+def func(var1: TYPE, var2: TYPE, ...): RETTYPE = ...
 ```
 
 ## The Substitution Modle
 The idea underlying the model is that all evaluation does is *reduce* an expression to a value.
 
-The substitution model is formalized in the [*λ-calculus*][http://en.wikipedia.org/wiki/Lambda_calculus], which gives a foundation for functional programming.
+The substitution model is formalized in the [λ-calculus]( http://en.wikipedia.org/wiki/Lambda_calculus ), which gives a foundation for functional programming.
 
 ## Scala's Evaluation Strategy
 Scala normally uses call-by-value strategy.
+
 **But if the type of a function parameter starts with `=>` it uses call-by-name.**
 
 ## Value Definitions
-* `def`: it is "by-name", its right hand side is evaluated on each use.
-* `val`: it is "by-value", its right hand side is evaluated at the point of the definition itself.
+* `def`: it is *by-name*, its right hand side is evaluated on each use.
+* `val`: it is *by-value*, its right hand side is evaluated at the point of the definition itself.
 
 ## Block in Scala
 
@@ -56,7 +57,8 @@ There are two ways to overcome the multiline expressions problem.
  + someOtherExpression)
 ```
 * Or we can write the operator on the first line, because this tells the Scala compiler that expression is not yet finished:
-``` someLongExpression +
+```Scala
+someLongExpression +
 someOtherExpression
 ```
 
