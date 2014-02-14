@@ -59,3 +59,120 @@ class Sub extends Base {
   def bar = 3
 }
 ```
+
+### Object Definitions
+**Object** is used to defines a *Singleton object*.
+In the following example, no other `Empty` instances can be (or need to be) created.
+Singleton objects are *values*, so `Empty` evaluates to itself.
+
+```Scala
+object Empty extends IntSet {
+  def contains(x: Int): Boolean = false
+  def incl(x: Int): IntSet = new NonEmpty(x, Empty, Empty)
+}
+```
+
+### Programs
+As It is possible to create standalone applications in Scala.
+Each such application contains an object with a `main` method.
+``` Scala
+object Hello {
+  def main(args: Array[String]) = println("Hello world!")
+}
+```
+
+### Dynamic Binding
+> Object-oriented languages (including Scala) implement dynamic method dispatch.
+
+This means that the code invoked by a method call depends on the runtime type of the object that contains the method.
+
+
+
+## How Classes are Organized
+### Packages
+Same to Java.
+
+#### Imports 
+Similar to Java
+
+You can import from either a package or an object.
+
+##### Forms of Imports
+``` Scala
+import week3.{Rational, Hello}  // Import the two 
+import week3._                  // In Java * is used as the wildcard
+```
+
+##### Automatic Imports
+Some entities are automatically imported in any Scala program.
+* All members of package `scala`
+* All members of package `java.lang`
+* All members of the *singleton* object `scala.Predef`
+
+
+### Traits
+**In Java, as well as in Scala, a class can only have one superclass.**
+
+> But what if a class has several natural supertypes to which it conforms or from which it wants to inherit code?
+---- Use **Traits**.
+
+* Classes, objects and traits can inherit from at most one class but *arbitrary many* traits.
+* Traits resemble interfaces in Java, but are more powerful because they can contains fields and concrete methods.
+* On the other hand, traits cannot have (value) parameters, only classes can.
+
+``` Scala
+trait Planar {
+  def height: Int
+  def width: Int
+  def surface = height * width
+}
+
+class Square extends Shape with Planar with Movable ...
+```
+
+
+### Scala’s Class Hierarchy
+Please refer to the figure at the page 9 of the 02_Lecture_3.2_-_How_Classes_Are_Organized.pdf of the class
+
+#### Top Types
+`Any`: the base type of all types; with Methods: `==`, `!=`, `equals`, `hashCode`, `toString`
+`AnyRef`: The base type of all *reference* types; Alias of `java.lang.Object`
+`AnyVal`: The base type of all *primitive* types.
+
+#### The Nothing Type
+Nothing is at the bottom of Scala’s type hierarchy. It is a subtype of every other type.
+* To signal abnormal termination
+* As an element type of empty collections
+
+### Exceptions  
+* Scala’s exception handling is similar to Java’s.
+* The expression `throw Exc` aborts evaluation with the exception `Exc`.
+* The type of this expression is `Nothing`.
+
+### Tye Null Type
+* Every reference class type also has `null` as a value.
+* The type of `null` is `Null`.
+* `Null` is a subtype of every class that inherits from Object ; 
+* `Null` is incompatible with subtypes of `AnyVal`.
+* 
+
+
+## Polymorphism
+
+### Cons-Lists
+
+### Value Parameters
+
+### Type Parameters
+
+### Complete Definition of List
+
+### Generic Functions
+
+### Type Inference
+
+### Types and Evaluation
+
+### Polymorphism
+
+
