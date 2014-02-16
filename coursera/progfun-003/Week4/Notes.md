@@ -160,19 +160,47 @@ Nothing is at the bottom of Scala’s type hierarchy. It is a subtype of every o
 ## Polymorphism
 
 ### Cons-Lists
+``` Scala
+class Cons(val head: Int, val tail: IntList) extends IntList
 
-### Value Parameters
+<=>
 
-### Type Parameters
+class Cons(_head: Int, _tail: IntList) extends IntList {
+  val head = _head
+  val tail = _tail
+}
+```
 
 ### Complete Definition of List
-
+``` Scala
+trait List[T] {
+  def isEmpty: Boolean
+  def head: T
+  def tail: List[T]
+}
+class Cons[T](val head: T, val tail: List[T]) extends List[T] {
+  def isEmpty = false
+}
+class Nil[T] extends List[T] {
+  def isEmpty = true
+  def head = throw new NoSuchElementException(ŏNil.headŏ)
+  def tail = throw new NoSuchElementException(ŏNil.tailŏ)
+}
+```
 ### Generic Functions
+Like classes, functions can have type parameters.
+``` Scala
+def singleton[T](elem: T) = new Cons[T](elem, new Nil[T])
+```
 
 ### Type Inference
+In most of the time, Scala compiler can usually deduce the correct type parameters from the value arguments of a function call. So, in most cases, type parameters can be left out.
+For example, `singleton[Int](1)` is the same as `singleton(1)`
 
 ### Types and Evaluation
+*Type Erasure*
 
 ### Polymorphism
+Same as Java.
 
 
