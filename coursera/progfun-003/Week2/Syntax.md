@@ -39,7 +39,7 @@ An expression can be:
 * A *block*, like `{ val x = math.abs(y); x*2}`,
 * An *anonymous function*, like `x=>x+1`.
 
-Definitions
+## Definitions
 ``` Scala
 Def           = FunDef
 FunDef        = def ident {([Parameters])}
