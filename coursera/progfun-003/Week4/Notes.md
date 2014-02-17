@@ -1,206 +1,151 @@
-# Data and Abstraction
+# Types and Pattern Matching
 
-## Class Hierarchies
-
-### Abstract Classes
-Abstract classes can contain members which are missing an implementation (like `incl` and `contains` in the following `IntSet` example).
-
-Consequently, no instances of an abstract class can be created with the operator new .
-
+## Functions as Objects
+The function type `A => B` is just an abbreviation for the class scala.Function1[A, B], which is roughly defined as follows:
+In this way, functions are objects with `apply` methods.
 ``` Scala
-abstract class IntSet {
-  def incl(x: Int): IntSet
-  def contains(x: Int): Boolean
+package scala
+trait Function1[A, B] {
+  def apply(x: A): B
 }
 ```
+There are also traits Function2, Function3, ..., for functions which take more parameters (currently up to 22).
 
-### Class Extensions
-
+### Example
+The anonymous function `(x: Int) => x * x` is equal to
 ``` Scala
-class Empty extends IntSet {
-  def contains(x: Int): Boolean = false
-  def incl(x: Int): IntSet = new NonEmpty(x, new Empty, new Empty)
-}
-
-class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet {
-  def contains(x: Int): Boolean = {
-    if (x === elem) true
-    else if (x < elem) left contains x
-    else if (x > elem) right contains x
-    else false
+{
+  class AnonFunc extends Function1[Int, Int] {
+    def apply(x: Int): Int = x * x
   }
-  
-  def incl(x: Int): IntSet = {
-    if (x < elem) new NonEmpty(elem, left incl x, right)
-    else if (x > elem) new NonEmpty(elem, left, right incl x)
-    else this
-  }
+  new AnonFunc
 }
 ```
-`Empty` and `NonEmpty` both *extend* the class `IntSet`.
-
-This implies that the types `Empty` and `NonEmpty` *conform* to the type IntSet
-* an object of the *subclass* type `Empty` or `NonEmpty` can be used wherever an object of the *superclass* type `IntSet` is required.
-
-> The direct or indirect superclasses of a class C are called base classes of C .
-
-### Implementation and Overriding
-The definitions of `contains` and `incl` in the classes Empty and NonEmpty **implement** the *abstract* functions in the *base* trait `IntSet`.
-
-It is also possible to redefine an existing, non-abstract definition in a subclass by using `override`.
-``` Scala
-abstract class Base {
-  def foo = 1
-  def bar: Int
-}
-
-class Sub extends Base {
-  override def foo = 2
-  def bar = 3
+or
+```Scala
+new Function1[Int, Int] {
+  def apply(x: Int) = x * x
 }
 ```
 
-### Object Definitions
-**Object** is used to defines a *Singleton object*.
-In the following example, no other `Empty` instances can be (or need to be) created.
-Singleton objects are *values*, so `Empty` evaluates to itself.
+### Functions and Methods
+Suppose `def f(x:Int): Boolean = ...`,
+`(x: Int) => f(x)` will be expanded to
+```Scala
+new Function1[Int, Boolean] {
+  def apply(x: Int) = f(x)
+}
+```
+
+## Polymophism
+*subtyping* & *generics* for the two main areas: *bounds* and *variance*
+
+### Type Bounds
+> One might want to express that `assertAllPos` takes `Empty` sets to `Empty sets` and `NonEmpty` sets to `NonEmpty` sets.
+
+A way to express this is `def assertAllPos [ S <: IntSet ] (r: S): S = ...`,
+where `<: IntSet` is an *upper bound* of the type parameter `S`.
+It means that `S` can be instantiated only to types that conform to IntSet.
+
+* `S <: T` means: `S` is a subtype of `T`
+* `S >: T` means: `S` is a supertype of `T`, or `T` is a subtype fo `S`
+
+It is also possible to mix a lower bound with an upper bound.
+```Scala
+  [S >: NonEmpty <: IntSet]
+```
+
+### Covariance
+> Given `NonEmpty <: IntSet`, is `List[NonEmpty] <: List[IntSet]`? -- It depends
+
+Opposite:
+```Scala
+NonEmpty[] a = new NonEmpty[] {new NonEmpty(1, Empty, Empty)}
+IntSet[] b = a
+b[0] = Empty
+NonEmpty s = a[0]
+```
+
+We call type for which this relationship holds *covariant* because their subtyping relationship varies exactly like the type parameter.
+
+#### The Liskov Substitution Principle
+> If `A <: B`, then everything one can to do with a value of type `B` one should also be able to do with a value of type `A`.
+
+## Variance
 
 ```Scala
-object Empty extends IntSet {
-  def contains(x: Int): Boolean = false
-  def incl(x: Int): IntSet = new NonEmpty(x, Empty, Empty)
-}
+C[A] <: C[B]          // C is covariant
+C[A] >: C[B]          // C is contravariant
+neither C[A] nor C[B] is a subtype of the other   // C is nonvariant
 ```
 
-### Programs
-As It is possible to create standalone applications in Scala.
-Each such application contains an object with a `main` method.
+> if `A2 <: A1` and `B1 <: B2`, then `A1=>B1 <: A2=>B2`
+
+Scala lets you declare the variance of a type by annotating the type parameter:
 ``` Scala
-object Hello {
-  def main(args: Array[String]) = println("Hello world!")
-}
+class C[+A] {...}     // C is covariant
+class C[-A] {...}     // C is contravariant
+class C[A] {...}      // C is nonvariant
 ```
 
-### Dynamic Binding
-> Object-oriented languages (including Scala) implement dynamic method dispatch.
-
-This means that the code invoked by a method call depends on the runtime type of the object that contains the method.
-
-
-
-## How Classes are Organized
-### Packages
-Same to Java.
-
-#### Imports 
-Similar to Java
-
-You can import from either a package or an object.
-
-##### Forms of Imports
-``` Scala
-import week3.{Rational, Hello}  // Import the two 
-import week3._                  // In Java * is used as the wildcard
-```
-
-##### Automatic Imports
-Some entities are automatically imported in any Scala program.
-* All members of package `scala`
-* All members of package `java.lang`
-* All members of the *singleton* object `scala.Predef`
-
-
-### Traits
-**In Java, as well as in Scala, a class can only have one superclass.**
-
-> But what if a class has several natural supertypes to which it conforms or from which it wants to inherit code?
----- Use **Traits**.
-
-* Classes, objects and traits can inherit from at most one class but *arbitrary many* traits.
-* Traits resemble interfaces in Java, but are more powerful because they can contains fields and concrete methods.
-* On the other hand, traits cannot have (value) parameters, only classes can.
+> Functions are contravariant in their argument type(s) and covariant in their result type.
 
 ``` Scala
-trait Planar {
-  def height: Int
-  def width: Int
-  def surface = height * width
+package scala
+trait Function1[-T, +U] {
+  def apply(x: T): U
 }
+```
 
-class Square extends Shape with Planar with Movable ...
+### Variance Check
+
+* covariant type parameters can only appear in method results.
+* contravariant type parameters can only appear in method.
+* invariant type parameters can appear anywhere.
+
+Lower Bound
+```Scala
+def prepend [U >: T] (elem: U): List[U] = new Cons(elem, this)
 ```
 
 
-### Scala’s Class Hierarchy
-Please refer to the figure at the page 9 of the 02_Lecture_3.2_-_How_Classes_Are_Organized.pdf of the class
+## Decomposition
 
-#### Top Types
-`Any`: the base type of all types; with Methods: `==`, `!=`, `equals`, `hashCode`, `toString`
-`AnyRef`: The base type of all *reference* types; Alias of `java.lang.Object`
-`AnyVal`: The base type of all *primitive* types.
+## Pattern Matching
 
-#### The Nothing Type
-Nothing is at the bottom of Scala’s type hierarchy. It is a subtype of every other type.
-* To signal abnormal termination
-* As an element type of empty collections
+*Pattern matching* is a generalization of switch from C/Java to class hierarchies.
+> Many functional languages automate the situation whose sole purpose of test and accessor functions is to *reverse* the construction process:
+* which subclass was used?
+* What were the arguments of the constructor?
+This is called *pattern matching*
 
-### Exceptions  
-* Scala’s exception handling is similar to Java’s.
-* The expression `throw Exc` aborts evaluation with the exception `Exc`.
-* The type of this expression is `Nothing`.
-
-### Tye Null Type
-* Every reference class type also has `null` as a value.
-* The type of `null` is `Null`.
-* `Null` is a subtype of every class that inherits from Object ; 
-* `Null` is incompatible with subtypes of `AnyVal`.
-* 
-
-
-## Polymorphism
-
-### Cons-Lists
+### Case Classes
 ``` Scala
-class Cons(val head: Int, val tail: IntList) extends IntList
+trait Expr
+case class Number(n: Int) extends Expr
+case class Sum(e1: Expr, e2: Expr) extends Expr
+```
 
-<=>
+It also implicitly defines companion objects with apply methods.
 
-class Cons(_head: Int, _tail: IntList) extends IntList {
-  val head = _head
-  val tail = _tail
+
+``` Scala 
+e match {
+  case pat1 => expr1,
+  ...
+  case patn => exprn
 }
 ```
 
-### Complete Definition of List
-``` Scala
-trait List[T] {
-  def isEmpty: Boolean
-  def head: T
-  def tail: List[T]
-}
-class Cons[T](val head: T, val tail: List[T]) extends List[T] {
-  def isEmpty = false
-}
-class Nil[T] extends List[T] {
-  def isEmpty = true
-  def head = throw new NoSuchElementException(ŏNil.headŏ)
-  def tail = throw new NoSuchElementException(ŏNil.tailŏ)
-}
-```
-### Generic Functions
-Like classes, functions can have type parameters.
-``` Scala
-def singleton[T](elem: T) = new Cons[T](elem, new Nil[T])
-```
+## Lists
 
-### Type Inference
-In most of the time, Scala compiler can usually deduce the correct type parameters from the value arguments of a function call. So, in most cases, type parameters can be left out.
-For example, `singleton[Int](1)` is the same as `singleton(1)`
+* Lists are immutable, the elements of a list cannot be changed
+* Lists are recursive.
+* Lists are homogeneous: the elements of a list must all have the same type.
 
-### Types and Evaluation
-*Type Erasure*
+The construction operation `::` (pronounced *cons*):
+`x :: xs` gives a new list with the first element `x`, followed by the elements of `xs`.
 
-### Polymorphism
-Same as Java.
+> Operators ending in ':' associate to the right.
 
 
