@@ -1,0 +1,3 @@
+[submodule "scalaSchool/scala_school"]
+	path = scalaSchool/scala_school
+	url = git@github.com:twitter/scala_school.git
