@@ -19,6 +19,8 @@ DNA pieces seperated by RNA primers in lagging strand one are **Okazaki** fragme
 
 Please find the process of RNA replication at
 [Wiley.com](http://www.wiley.com/college/pratt/0471393878/instructor/animations/dna_replication/dna_replication.swf) which gives the details,
-Or at [BioInteractive](http://www.hhmi.org/biointeractive/dna-replication-advanced-detail) which give the a high level and detail description.
+Or at [BioInteractive](http://www.hhmi.org/biointeractive/dna-replication-advanced-detail) which give the a high level description,
+And at [YouTube](https://www.youtube.com/watch?v=OnuspQG0Jd0), it gives both high level and detail description of the RNA replication process.
+
 
 
