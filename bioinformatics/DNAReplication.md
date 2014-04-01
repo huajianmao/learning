@@ -1,5 +1,7 @@
 # DNA Replication
 
+> Indeed, biologists would immediately plan an experiment to locate oriC: for example, deleting various short segments from the genome and eventually finding a segment whose deletion stops replication.
+
 ## 3' and 5'
 3和5是指在一个脱氧核糖众连接着相邻的磷酸基团的两个炭原子。
 
