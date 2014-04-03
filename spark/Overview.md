@@ -15,11 +15,11 @@
 # 资料索引
 
 ## Spark Papers and Book
-* *M. Zaharia*. [An Architecture for Fast and General Data Processing on Large Clusters](http://www.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-12.pdf). **(PhD Disseration), University of California at Berkeley**, February 2014.
-* *M. Zaharia, M. Chowdhury, T. Das, A. Dave, J. Ma, M. McCauley, M.J. Franklin, S. Shenker, I. Stoica*. [Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing](http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf), **NSDI 2012**, April 2012.
-* *M. Zaharia, M. Chowdhury, M.J. Franklin, S. Shenker and I. Stoica*. [Spark: Cluster Computing with Working Sets](http://people.csail.mit.edu/matei/papers/2010/hotcloud_spark.pdf), **HotCloud 2010**, June 2010.
+* *M. Zaharia*. [An Architecture for Fast and General Data Processing on Large Clusters](./doc/EECS-2014-12.pdf). **(PhD Disseration), University of California at Berkeley**, February 2014.
+* *M. Zaharia, M. Chowdhury, T. Das, A. Dave, J. Ma, M. McCauley, M.J. Franklin, S. Shenker, I. Stoica*. [Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing](./doc/nsdi_spark.pdf), **NSDI 2012**, April 2012.
+* *M. Zaharia, M. Chowdhury, M.J. Franklin, S. Shenker and I. Stoica*. [Spark: Cluster Computing with Working Sets](./doc/hotcloud_spark.pdf), **HotCloud 2010**, June 2010.
 
-* *Karau, Holden*. [Fast Data Processing With Spark](http://books.google.com/books?hl=en&lr=&id=PdqcAQAAQBAJ&oi=fnd&pg=PT7&dq=spark+rdd&ots=w2sCJBB8fi&sig=efDQYb5RxSCYgqUVkRSSWdRXg_0). **Packt Publishing Ltd**, 2013. [Book, you may find the PDF version [here](http://ishare.iask.sina.com.cn/f/67674105.html)]
+* *Karau, Holden*. [Fast Data Processing With Spark](./doc/Fast_Data_Processing_with_Spark.pdf). **Packt Publishing Ltd**, 2013. [Book, you may find the PDF version [here](http://ishare.iask.sina.com.cn/f/67674105.html)]
 
 ## Talks
 * The Intro to Spark Internals Meetup talk ([Video](https://www.youtube.com/watch?v=49Hr5xZyTEA) or [here](http://pan.baidu.com/s/1kTHStAf), [PPT slides](./doc/dev-meetup-dec-2012.pptx)) is a good introduction to the internals
