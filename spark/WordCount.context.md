@@ -1,5 +1,5 @@
-Spark Example and The Running Log
----------------------------------
+我理解的Spark -- An example
+---------------------------
 
 ## Source code:
 ``` scala
