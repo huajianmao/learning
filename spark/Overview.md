@@ -12,6 +12,20 @@
 > 如果提供的资料有涉及到版权问题，麻烦提醒，我会及时删除。[Contact Me](mailto:huajianmao@gmail.com)
 
 
+要分析Spark的代码，第一步必然要对它有所了解，有的人可能是先去读关于它的paper，有的人是先装上试试手，或者找些网上的介绍，一边对它有些感性的认识。但是，从来没有人教过我如何去读一个系统的代码，所以也就只能由着自己的性子来，自己觉得怎么舒服就怎么来了。所以这里记录的也就是我自己一直以来了解一个系统内部细节的方法和过程了。如果有觉得这些读代码的方法不好的，欢迎指出，便于帮我改正。先进的工作方法才能提高效率嘛！
+
+----
+**目前的打算**是：
+> 
+1. 装上Spark，运行几个Example程序试试看。
+2. 读Spark的几篇paper，主要是[Matei Zaharia](http://www.cs.berkeley.edu/~matei/)的几篇论文和他的博士毕业论文（见下文资料索引）。
+3. 看关于Spark Internal的talk以及[Spark Summit](http://spark-summit.org/)和[AMP Camp](http://ampcamp.berkeley.edu/)上关于Spark原理的几个Tutorial。
+4. 结合别人的代码分析笔记，开始分析源代码。
+5. Contribute to the community? I hope so ...
+
+因此，本篇主要是罗列过程中可能会用到的一些资源索引，便于将来使用。
+
+----
 # 资料索引
 
 ## Spark Papers and Book
