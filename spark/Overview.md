@@ -22,7 +22,7 @@
 * *Karau, Holden*. [Fast Data Processing With Spark](http://books.google.com/books?hl=en&lr=&id=PdqcAQAAQBAJ&oi=fnd&pg=PT7&dq=spark+rdd&ots=w2sCJBB8fi&sig=efDQYb5RxSCYgqUVkRSSWdRXg_0). **Packt Publishing Ltd**, 2013. [Book, you may find the PDF version [here](http://ishare.iask.sina.com.cn/f/67674105.html)]
 
 ## Talks
-* The Intro to Spark Internals Meetup talk ([Video](https://www.youtube.com/watch?v=49Hr5xZyTEA), [PPT slides](./doc/dev-meetup-dec-2012.pptx)) is a good introduction to the internals
+* The Intro to Spark Internals Meetup talk ([Video](https://www.youtube.com/watch?v=49Hr5xZyTEA) or [here](http://pan.baidu.com/s/1kTHStAf), [PPT slides](./doc/dev-meetup-dec-2012.pptx)) is a good introduction to the internals
 * [Spark Summit](http://spark-summit.org) ([2013](http://spark-summit.org/2013)|[2014](http://spark-summit.org/2014))
 * [AMP Camp – Big Data Bootcamps](http://ampcamp.berkeley.edu/) ([AMP Camp 1](http://ampcamp.berkeley.edu/amp-camp-one-berkeley-2012/)|[AMP Camp 2](http://ampcamp.berkeley.edu/amp-camp-two-strata-2013/)|[AMP Camp 3](http://ampcamp.berkeley.edu/3/)|[AMP Camp 4](http://ampcamp.berkeley.edu/4/))
 * [Apache Spark Channel on YouTube](https://www.youtube.com/channel/UCRzsq7k4-kT-h3TDUBQ82-w)
