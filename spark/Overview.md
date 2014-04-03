@@ -51,6 +51,9 @@
 * [@Andrew-Xia](http://weibo.com/u/1410938285)(Xia Junluan) on [Github](https://github.com/xiajunluan), *Technical Architect and Engineering Manager at Intel Corporation, Shanghai*
 
 ## Scala
+* [Scala Document](http://www.scala-lang.org/documentation/)
+* [Scala School](http://twitter.github.io/scala_school/) from Twitter
+* [Effective Scala](http://twitter.github.io/effectivescala/) Twitter's "best practices" for Scala. Useful for understanding idioms in Twitter's code.
 * [Functional Programming Principles in Scala](https://www.coursera.org/course/progfun). This is a course about functional programming given by Martin Odersky himself. 
 * [Principles of Reactive Programming](https://www.coursera.org/course/reactive). This is a course about concurrency and event-based asynchronous programming in Scala. 
 * [Independent Courseware](http://scalacourses.com/). Take a series of online Scala courses ranging from beginner to advanced for a fee.
