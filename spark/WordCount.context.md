@@ -39,7 +39,7 @@ object WordCount {
 ![Flow chart](./img/WordCount.context.jpg) created by [baishuo491](http://baishuo491.iteye.com/blog/2019510)
 
 ## The log
-``` log
+``` java
 ==== Going to create spark! ====
 14/04/03 08:58:56 WARN util.Utils: Your hostname, BMILinux resolves to a loopback address: 127.0.1.1; using 202.38.152.213 instead (on interface eth0)
 14/04/03 08:58:56 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
