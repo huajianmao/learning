@@ -44,12 +44,14 @@ object Lists {
    */
   def max(xs: List[Int]): Int = {
 
-    if (xs.isEmpty) {
-      throw new java.util.NoSuchElementException()
-    } else {
-      if (xs.tail.isEmpty) xs.head 
-      else if( xs.head >= max(xs.tail) ) xs.head
-      else max(xs.tail)
-    }
+    if (xs.isEmpty) throw new java.util.NoSuchElementException()
+
+    def inner(currMax: Int, xs: List[Int]): Int =
+      xs match {
+        case Nil => currMax
+        case head :: tail => inner(if (head>currMax) head else currMax , tail)
+      }
+
+    inner(xs.head, xs.tail)
   }
 }
