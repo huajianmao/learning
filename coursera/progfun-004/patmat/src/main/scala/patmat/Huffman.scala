@@ -27,7 +27,7 @@ object Huffman {
   // Part 1: Basics
 
   def weight(tree: CodeTree): Int = tree match {
-    case Fork(left, right, chars, weight) => Huffman.weight(left) + Huffman.weight(right)
+    case Fork(left, right, chars, weight) => weight //Huffman.weight(left) + Huffman.weight(right)
     case Leaf(char, weight) => weight
   }
 
@@ -78,6 +78,8 @@ object Huffman {
    *   }
    */
   def times(chars: List[Char]): List[(Char, Int)] = {
+    chars.groupBy((char: Char) => char).mapValues(_.length).toList
+/*    
     def addOneTime(x: Char, theTimes: List[(Char, Int)]): List[(Char, Int)] = {
       theTimes.filter(_._1 == x) match {
         case Nil => theTimes ::: List((x, 1))
@@ -89,6 +91,7 @@ object Huffman {
       case Nil => Nil
       case x :: xs => addOneTime(x, Huffman.times(xs))
     }
+ */   
   }
 
   /**
@@ -98,12 +101,17 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+    freqs.sortBy(c => c._2).map(c => Leaf(c._1, c._2))
+  }
+  /*
   def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = freqs match {
     case Nil => Nil
     case x :: tail => makeOrderedLeafList(tail.filter( freq => freq._2 <= x._2 && freq._1 != x._1)) ::: 
                       List(Leaf(x._1, x._2)) ::: 
                       makeOrderedLeafList(tail.filter(freq => freq._2 > x._2 && freq._1 != x._1))
   }
+  */
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
@@ -123,7 +131,7 @@ object Huffman {
    * unchanged.
    */
   def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
-    case x1 :: x2 :: xs => List(Fork(x1, x2, chars(x1):::chars(x2), weight(x1)+weight(x2))) ::: xs
+    case x1 :: x2 :: xs => (makeCodeTree(x1, x2) :: xs).sortBy(c =>weight(c))
     case _ => trees
   }
 
@@ -163,7 +171,7 @@ object Huffman {
   def createCodeTree(chars: List[Char]): CodeTree = {
     val freqs = times(chars)
     val leafList = makeOrderedLeafList(freqs)
-    until(singleton, combine)(leafList)(0)
+    until(singleton, combine)(leafList).head
   }
 
 
@@ -306,6 +314,11 @@ object Huffman {
 }
 
 object Main extends App {
+  val myCodeTree = Huffman.createCodeTree("The frequency of letters in text has often been studied for use in cryptanalysis, and frequency analysis in particular.".toList)
+  println("-----------")
+  println(myCodeTree)
+  println(Huffman.encode(myCodeTree)("huffmanestcool".toList).length)
+  println(Huffman.encode(myCodeTree)("ti sae".toList).length)
   println(Huffman.createCodeTree("hello".toList))
   println(Huffman.decodedSecret)
   println(Huffman.encode(Huffman.frenchCode)(List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l')))
