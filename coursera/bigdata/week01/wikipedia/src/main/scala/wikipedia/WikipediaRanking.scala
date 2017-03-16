@@ -14,7 +14,7 @@ object WikipediaRanking {
     "JavaScript", "Java", "PHP", "Python", "C#", "C++", "Ruby", "CSS",
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
 
-  val conf: SparkConf = new SparkConf().setMaster("local")
+  val conf: SparkConf = new SparkConf().setAppName("WikipediaRanking").setMaster("local")
   val sc: SparkContext = new SparkContext(conf)
   // Hint: use a combination of `sc.textFile`, `WikipediaData.filePath` and `WikipediaData.parse`
   val wikiRdd: RDD[WikipediaArticle] = sc.textFile(WikipediaData.filePath)
@@ -54,12 +54,9 @@ object WikipediaRanking {
    * to the Wikipedia pages in which it occurs.
    */
   def makeIndex(langs: List[String], rdd: RDD[WikipediaArticle]): RDD[(String, Iterable[WikipediaArticle])] = {
-    /**
-    rdd.map(article => langs.filter(articleHasLang(_, article))
-                            .map((_, article))
-    )
-     */
-                            ???
+    rdd.flatMap(article => langs.filter(articleHasLang(_, article))
+                                .map((_, article)))
+       .groupByKey()
   }
 
   /* (2) Compute the language ranking again, but now using the inverted index. Can you notice
@@ -68,7 +65,9 @@ object WikipediaRanking {
    *   Note: this operation is long-running. It can potentially run for
    *   several seconds.
    */
-  def rankLangsUsingIndex(index: RDD[(String, Iterable[WikipediaArticle])]): List[(String, Int)] = ???
+  def rankLangsUsingIndex(index: RDD[(String, Iterable[WikipediaArticle])]): List[(String, Int)] = {
+    index.map(tuple2 => (tuple2._1, tuple2._2.size)).reduceByKey(_ + _).collect().toList.sortWith(_._2 > _._2)
+  }
 
   /* (3) Use `reduceByKey` so that the computation of the index and the ranking are combined.
    *     Can you notice an improvement in performance compared to measuring *both* the computation of the index
@@ -77,7 +76,11 @@ object WikipediaRanking {
    *   Note: this operation is long-running. It can potentially run for
    *   several seconds.
    */
-  def rankLangsReduceByKey(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] = ???
+  def rankLangsReduceByKey(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] = {
+    rdd.flatMap(article => langs.filter(articleHasLang(_, article))
+                                .map((_, 1)))
+       .reduceByKey((x: Int, y: Int)=> x + y).collect().toList.sortWith(_._2 > _._2)
+  }
 
   def main(args: Array[String]) {
 
