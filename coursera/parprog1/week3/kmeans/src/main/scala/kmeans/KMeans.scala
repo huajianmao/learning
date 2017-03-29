@@ -46,7 +46,7 @@ class KMeans {
     if (points.length == 0) {
       means.map(p => (p, List())).toMap
     } else {
-      points.par.map(p => (findClosest(p, means), p))
+      points.map(p => (findClosest(p, means), p))
                 .groupBy(_._1)
                 .map(pair => (pair._1, pair._2.map(_._2)))
     }
@@ -65,15 +65,14 @@ class KMeans {
   }
 
   def update(classified: GenMap[Point, GenSeq[Point]], oldMeans: GenSeq[Point]): GenSeq[Point] = {
-    oldMeans.par.map {p => findAverage(p, classified(p))}
+    oldMeans.map {p => findAverage(p, classified(p))}
   }
 
   def converged(eta: Double)(oldMeans: GenSeq[Point], newMeans: GenSeq[Point]): Boolean = {
     val distance = oldMeans.zip(newMeans)
-                           .par
                            .map {case (p1, p2) => p1.squareDistance(p2)}
                            .sum
-    eta >= distance
+    distance <= eta
   }
 
   @tailrec
