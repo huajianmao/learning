@@ -31,6 +31,8 @@ object TimeUsage {
     val (primaryNeedsColumns, workColumns, otherColumns) = classifiedColumns(columns)
     val summaryDf = timeUsageSummary(primaryNeedsColumns, workColumns, otherColumns, initDf)
     val finalDf = timeUsageGrouped(summaryDf)
+    // val finalDf = timeUsageGroupedSql(summaryDf)
+    // val finalDf = timeUsageGroupedTyped(summaryDf)
     finalDf.show()
   }
 
@@ -98,7 +100,14 @@ object TimeUsage {
                  s.startsWith("t1803")) => (col(s) :: acc._1, acc._2, acc._3)
       case s if (s.startsWith("t05") ||
                  s.startsWith("t1805")) => (acc._1, col(s) :: acc._2, acc._3)
-      case s => (acc._1, acc._2, col(s) :: acc._3)
+      case s if (s.startsWith("t02") || s.startsWith("t04") ||
+                 s.startsWith("t06") || s.startsWith("t07") ||
+                 s.startsWith("t08") || s.startsWith("t09") ||
+                 s.startsWith("t10") || s.startsWith("t12") ||
+                 s.startsWith("t13") || s.startsWith("t14") ||
+                 s.startsWith("t15") || s.startsWith("t16") ||
+                 s.startsWith("t18")) => (acc._1, acc._2, col(s) :: acc._3)
+      case _ => acc
     })
   }
 
@@ -138,9 +147,13 @@ object TimeUsage {
     otherColumns: List[Column],
     df: DataFrame
   ): DataFrame = {
-    val workingStatusProjection: Column = $"telfs"
-    val sexProjection: Column = $"tesex"
-    val ageProjection: Column = $"teage"
+    val workingStatusProjection: Column = when($"telfs" >= 1 && $"telfs" < 3, "working").
+                                          otherwise("not working") as "working"
+    val sexProjection: Column = when($"tesex" === 1, "male").
+                                otherwise("female") as "sex"
+    val ageProjection: Column = when($"teage" >= 15 && $"teage" <= 22, "young").
+                                when($"teage" >= 23 && $"teage" <= 55, "active").
+                                otherwise("elder") as "age"
 
     val primaryNeedsProjection: Column = primaryNeedsColumns.reduce(_ + _) as "primaryNeeds"
     val workProjection: Column = workColumns.reduce(_ + _) as "work"
@@ -168,7 +181,11 @@ object TimeUsage {
     * Finally, the resulting DataFrame should be sorted by working status, sex and age.
     */
   def timeUsageGrouped(summed: DataFrame): DataFrame = {
-    ???
+    summed.groupBy($"working", $"sex", $"age")
+          .agg(round(avg($"primaryNeeds") / 60, 1) as "primaryNeeds",
+               round(avg($"work") / 60, 1) as "work",
+               round(avg($"other") / 60, 1) as "other")
+          .orderBy($"working" desc, $"sex" desc, $"age" desc)
   }
 
   /**
@@ -184,8 +201,15 @@ object TimeUsage {
   /** @return SQL query equivalent to the transformation implemented in `timeUsageGrouped`
     * @param viewName Name of the SQL view to use
     */
-  def timeUsageGroupedSqlQuery(viewName: String): String =
-    ???
+  def timeUsageGroupedSqlQuery(viewName: String): String = """
+    SELECT working, sex, age,
+           ROUND(AVG(primaryNeeds) / 60, 1) AS primaryNeeds,
+           ROUND(AVG(work) / 60, 1) AS work,
+           ROUND(AVG(other) / 60, 1) AS other
+    FROM """ + viewName + """
+    GROUP By working, sex, age
+    ORDER BY working desc, sex desc, age desc
+  """
 
   /**
     * @return A `Dataset[TimeUsageRow]` from the “untyped” `DataFrame`
@@ -195,7 +219,7 @@ object TimeUsage {
     * cast them at the same time.
     */
   def timeUsageSummaryTyped(timeUsageSummaryDf: DataFrame): Dataset[TimeUsageRow] =
-    timeUsageSummaryDf.as[TimeUsageRow]
+    ???
 
   /**
     * @return Same as `timeUsageGrouped`, but using the typed API when possible
