@@ -62,15 +62,17 @@ object TimeUsage {
     *         have type Double. None of the fields are nullable.
     * @param columnNames Column names of the DataFrame
     */
-  def dfSchema(columnNames: List[String]): StructType =
-    ???
+  def dfSchema(columnNames: List[String]): StructType = StructType (
+    StructField(columnNames.head, StringType, nullable = false) ::
+    columnNames.tail.map(name => StructField(name, DoubleType, nullable = false))
+  )
 
 
   /** @return An RDD Row compatible with the schema produced by `dfSchema`
     * @param line Raw fields
     */
   def row(line: List[String]): Row =
-    ???
+    Row.fromSeq(line.head :: line.tail.map(_.trim.toDouble))
 
   /** @return The initial data frame columns partitioned in three groups: primary needs (sleeping, eating, etc.),
     *         work and other (leisure activities)
@@ -88,7 +90,16 @@ object TimeUsage {
     *    “t10”, “t12”, “t13”, “t14”, “t15”, “t16” and “t18” (those which are not part of the previous groups only).
     */
   def classifiedColumns(columnNames: List[String]): (List[Column], List[Column], List[Column]) = {
-    ???
+    columnNames.reverse.foldLeft((List[Column](), List[Column](), List[Column]()))((acc, name) => name match {
+      case s if (s.startsWith("t01") ||
+                 s.startsWith("t03") ||
+                 s.startsWith("t11") ||
+                 s.startsWith("t1801") ||
+                 s.startsWith("t1803")) => (col(s) :: acc._1, acc._2, acc._3)
+      case s if (s.startsWith("t05") ||
+                 s.startsWith("t1805")) => (acc._1, col(s) :: acc._2, acc._3)
+      case s => (acc._1, acc._2, col(s) :: acc._3)
+    })
   }
 
   /** @return a projection of the initial DataFrame such that all columns containing hours spent on primary needs
@@ -127,13 +138,13 @@ object TimeUsage {
     otherColumns: List[Column],
     df: DataFrame
   ): DataFrame = {
-    val workingStatusProjection: Column = ???
-    val sexProjection: Column = ???
-    val ageProjection: Column = ???
+    val workingStatusProjection: Column = $"telfs"
+    val sexProjection: Column = $"tesex"
+    val ageProjection: Column = $"teage"
 
-    val primaryNeedsProjection: Column = ???
-    val workProjection: Column = ???
-    val otherProjection: Column = ???
+    val primaryNeedsProjection: Column = primaryNeedsColumns.reduce(_ + _) as "primaryNeeds"
+    val workProjection: Column = workColumns.reduce(_ + _) as "work"
+    val otherProjection: Column = otherColumns.reduce(_ + _) as "other"
     df
       .select(workingStatusProjection, sexProjection, ageProjection, primaryNeedsProjection, workProjection, otherProjection)
       .where($"telfs" <= 4) // Discard people who are not in labor force
@@ -184,7 +195,7 @@ object TimeUsage {
     * cast them at the same time.
     */
   def timeUsageSummaryTyped(timeUsageSummaryDf: DataFrame): Dataset[TimeUsageRow] =
-    ???
+    timeUsageSummaryDf.as[TimeUsageRow]
 
   /**
     * @return Same as `timeUsageGrouped`, but using the typed API when possible
