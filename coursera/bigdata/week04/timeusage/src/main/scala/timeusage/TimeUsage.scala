@@ -153,9 +153,9 @@ object TimeUsage {
                                 when($"teage" >= 23 && $"teage" <= 55, "active").
                                 otherwise("elder") as "age"
 
-    val primaryNeedsProjection: Column = primaryNeedsColumns.reduce(_ + _) as "primaryNeeds"
-    val workProjection: Column = workColumns.reduce(_ + _) as "work"
-    val otherProjection: Column = otherColumns.reduce(_ + _) as "other"
+    val primaryNeedsProjection: Column = primaryNeedsColumns.reduce(_ + _) / 60.0d as "primaryNeeds"
+    val workProjection: Column = workColumns.reduce(_ + _) / 60.0d as "work"
+    val otherProjection: Column = otherColumns.reduce(_ + _) / 60.0d as "other"
     df
       .select(workingStatusProjection, sexProjection, ageProjection, primaryNeedsProjection, workProjection, otherProjection)
       .where($"telfs" <= 4) // Discard people who are not in labor force
@@ -180,10 +180,10 @@ object TimeUsage {
     */
   def timeUsageGrouped(summed: DataFrame): DataFrame = {
     summed.groupBy($"working", $"sex", $"age")
-          .agg(round(avg($"primaryNeeds") / 60, 1) as "primaryNeeds",
-               round(avg($"work") / 60, 1) as "work",
-               round(avg($"other") / 60, 1) as "other")
-          .orderBy($"working" desc, $"sex" desc, $"age" desc)
+          .agg(round(avg($"primaryNeeds"), 1) as "primaryNeeds",
+               round(avg($"work"), 1) as "work",
+               round(avg($"other"), 1) as "other")
+          .orderBy($"working", $"sex", $"age")
   }
 
   /**
@@ -201,12 +201,12 @@ object TimeUsage {
     */
   def timeUsageGroupedSqlQuery(viewName: String): String = """
     SELECT working, sex, age,
-           ROUND(AVG(primaryNeeds) / 60, 1) AS primaryNeeds,
-           ROUND(AVG(work) / 60, 1) AS work,
-           ROUND(AVG(other) / 60, 1) AS other
+           ROUND(AVG(primaryNeeds), 1) AS primaryNeeds,
+           ROUND(AVG(work), 1) AS work,
+           ROUND(AVG(other), 1) AS other
     FROM """ + viewName + """
     GROUP By working, sex, age
-    ORDER BY working desc, sex desc, age desc
+    ORDER BY working, sex, age
   """
 
   /**
@@ -244,7 +244,7 @@ object TimeUsage {
                round(typed.avg[TimeUsageRow](_.work), 1).as(Encoders.DOUBLE),
                round(typed.avg[TimeUsageRow](_.other), 1).as(Encoders.DOUBLE))
           .map { u => TimeUsageRow(u._1._1, u._1._2, u._1._3, u._2, u._3, u._4) }
-          .sort ($"working" desc, $"sex" desc, $"age" desc)
+          .sort ($"working", $"sex", $"age")
   }
 }
 
