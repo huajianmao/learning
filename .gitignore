@@ -13,3 +13,4 @@ project/plugins/project/
 .scala_dependencies
 
 *.dat
+coursera/scala-capstone/observatory/src/main/resources/*
