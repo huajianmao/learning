@@ -55,8 +55,10 @@ object TimeUsage {
   }
 
   /** @return The filesystem path of the given resource */
-  def fsPath(resource: String): String =
-    Paths.get(getClass.getResource(resource).toURI).toString
+  def fsPath(resource: String): String = {
+    "src/main/resources" + resource
+    // Paths.get(getClass.getResource(resource).toURI).toString
+  }
 
   /** @return The schema of the DataFrame, assuming that the first given column has type String and all the others
     *         have type Double. None of the fields are nullable.
