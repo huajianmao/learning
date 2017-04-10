@@ -1,3 +1,9 @@
 [submodule "scalaSchool/scala_school"]
 	path = scalaSchool/scala_school
 	url = git@github.com:twitter/scala_school.git
+[submodule "books/fpinscala"]
+	path = books/fpinscala
+	url = https://github.com/huajianmao/fpinscala
+[submodule "books/aaspark"]
+	path = books/aaspark
+	url = https://github.com/huajianmao/aaspark
