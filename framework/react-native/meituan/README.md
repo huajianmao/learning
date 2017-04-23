@@ -17,4 +17,11 @@ npm install -g react-native-cli
 
 # 3. install android-sdk
 brew install android-sdk
+
+# 4. create project
+react-native init demo
+
+# 5. install npm packages
+cd demo
+npm install
 ```
