@@ -16,3 +16,5 @@ project/plugins/project/
 coursera/scala-capstone/observatory/src/main/resources/*
 
 .DS_Store
+node_modules/
+yarn.lock
