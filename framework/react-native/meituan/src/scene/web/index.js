@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Text, View, WebView, InteractionManager } from 'react-native';
+import { StyleSheet, View, WebView, InteractionManager } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 class WebScene extends Component {
