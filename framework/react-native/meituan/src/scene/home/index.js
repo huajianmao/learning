@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Text, View, TouchableOpacity, ListView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ListView } from 'react-native';
 
 import NavigationItem from '../../widget/navigationitem'
 
 import color from '../../widget/color'
 import screen from '../../common/screen'
 import system from '../../common/system'
+import { Paragraph } from '../../widget/text'
 
 class HomeScene extends Component {
   static renderRightButton = () => {
@@ -19,7 +20,8 @@ class HomeScene extends Component {
   static renderTitle = () => {
     return (
       <TouchableOpacity>
-Title
+        <Image source={require('../../img/home/search_icon.png')} style={styles.searchIcon} />
+        <Paragraph>一点点</Paragraph>
       </TouchableOpacity>
     )
   }
@@ -77,4 +79,5 @@ const styles = StyleSheet.create({
     margin: 5,
   }
 })
+
 export default HomeScene;
