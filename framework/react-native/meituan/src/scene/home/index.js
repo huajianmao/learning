@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 
 import { StyleSheet, Text, View, TouchableOpacity, Image, ListView } from 'react-native';
 
+import RefreshListView, { RefreshState } from '../../widget/refreshlistview'
 import NavigationItem from '../../widget/navigationitem'
 
 import color from '../../widget/color'
 import screen from '../../common/screen'
 import system from '../../common/system'
-import { Paragraph } from '../../widget/text'
+import { Heading2, Paragraph } from '../../widget/text'
+
+import api from '../../api/index'
 
 class HomeScene extends Component {
   static renderRightButton = () => {
@@ -37,12 +40,68 @@ class HomeScene extends Component {
     dataSource: ListView.DataSource
   }
 
+  constructor(props: Object) {
+    super(props)
+    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    this.state = {
+      discounts: [],
+      dataSource: ds.cloneWithRows([])
+    }
+  }
+
+  requestData() {
+    this.requestDiscount()
+    this.requestRecommend()
+  }
+
+  requestDiscount() {
+    fetch(api.discount)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({...this.state, discounts: json.data})
+      })
+      .catch((error) => {alert(error)})
+  }
+
+  requestRecommend() {
+    fetch(api.recommend)
+      .then((response) => response.json())
+      .then((json) => {
+        let datalist = json.data.map((info) => {
+          return {
+
+          }
+        })
+
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(datalist)})
+        setTimeout(() => {
+          this.refs.listview.endRefreshing(RefreshState.NoMoreData)
+        }, 500)
+      })
+      .catch((error) => {
+        this.refs.listview.endRefreshing()
+      })
+  }
+
+  componentDidMount() {
+    this.refs.listview.startHeaderRefreshing(RefreshState.Failure)
+  }
+
   render() {
     return (
       <View>
-        <Text>
-          HomeScene
-        </Text>
+        <RefreshListView ref="listview"/>
+      </View>
+    )
+  }
+
+  renderHeader() {
+    return (
+      <View>
+
+        <View style={styles.recommendHeader}>
+          <Heading2>猜你喜欢</Heading2>
+        </View>
       </View>
     )
   }
