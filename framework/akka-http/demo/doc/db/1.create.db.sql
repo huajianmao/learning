@@ -1,0 +1,7 @@
+DROP SCHEMA IF EXISTS `ifocus` ;
+CREATE SCHEMA IF NOT EXISTS `ifocus` DEFAULT CHARACTER SET utf8 ;
+
+CREATE USER 'ifocus'@'localhost' IDENTIFIED BY 'ifocus';
+GRANT ALL PRIVILEGES ON ifocus.* TO 'ifocus'@'localhost';
+
+FLUSH PRIVILEGES;

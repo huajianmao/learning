@@ -11,6 +11,10 @@ libraryDependencies ++= {
   Seq(
     "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
     "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+    "com.typesafe.slick" %% "slick" % "3.2.0",
+
+    "com.zaxxer" % "HikariCP" % "2.6.1",
+    "mysql" % "mysql-connector-java" % "6.0.6",
 
     "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
   )
