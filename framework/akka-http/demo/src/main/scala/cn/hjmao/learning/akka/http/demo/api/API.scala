@@ -1,9 +1,15 @@
 package cn.hjmao.learning.akka.http.demo.api
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
+import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
+
+import cn.hjmao.learning.akka.http.demo.model.UserEntity
 import cn.hjmao.learning.akka.http.demo.service.{AuthService, UserService}
 import cn.hjmao.learning.akka.http.demo.utils.CorsSupport
+
+import io.circe.generic.auto._
+import io.circe.syntax._
 
 import scala.concurrent.ExecutionContext
 
@@ -13,51 +19,55 @@ import scala.concurrent.ExecutionContext
 
 class API(userService: UserService, authService: AuthService)
          (implicit executionContext: ExecutionContext) extends CorsSupport {
-  val userRouter = new UserAPI(userService)
+  val userRouter = new UserAPI(authService, userService)
   val authRouter = new AuthAPI(authService)
-  val testRouter = new TestAPI()
 
-  val routes = pathPrefix("v1") {
-    pathPrefix("api") {
-      corsHandler {
-        testRouter.routes ~
-        userRouter.routes ~
-        authRouter.routes
+  val routes = pathPrefix("v1") { pathPrefix("api") {
+    corsHandler {
+      authRouter.routes ~
+      userRouter.routes
+    }
+  }}
+}
+
+class AuthAPI(val authService: AuthService)
+             (implicit executionContext: ExecutionContext) extends FailFastCirceSupport with SecurityDirectives {
+
+  import StatusCodes._
+  import authService._
+
+  val routes = pathPrefix("auth") {
+    path("signin") {
+      pathEndOrSingleSlash {
+        post {
+          entity(as[UsernamePassword]) { usernamePassword =>
+            complete(signin(usernamePassword.username, usernamePassword.password).map(_.asJson))
+          }
+        }
+      }
+    } ~
+    path("signup") {
+      pathEndOrSingleSlash {
+        post {
+          entity(as[UserEntity]) { userEntity =>
+            complete(Created -> signup(userEntity).map(_.asJson))
+          }
+        }
       }
     }
   }
+
+  private case class UsernamePassword(username: String, password: String)
 }
 
-
-class UserAPI(userservice: UserService)(implicit executionContext: ExecutionContext) {
-  import userservice._
-  val routes = pathPrefix("user") {
+class UserAPI(val authService: AuthService, userService: UserService)
+             (implicit executionContext: ExecutionContext) extends FailFastCirceSupport with SecurityDirectives {
+  import userService._
+  val routes = pathPrefix("users") {
     pathEndOrSingleSlash {
       get {
-        complete(
-          HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Going to list users</h1>")
-        )
+        complete(getUsers().map(_.asJson))
       }
-    }
-  }
-}
-
-class AuthAPI(authService: AuthService)(implicit executionContext: ExecutionContext) {
-  val routes = pathPrefix("auth") {
-    get {
-      complete(
-        HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello in AuthRouter</h1>")
-      )
-    }
-  }
-}
-
-class TestAPI()(implicit executionContext: ExecutionContext) {
-  val routes = pathPrefix("test") {
-    get {
-      complete(
-        HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello in TestRouter</h1>")
-      )
     }
   }
 }
