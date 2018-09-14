@@ -15,7 +15,7 @@ class Perceptron(object):
     def predict(self, input_vec):
         temp = reduce(lambda a, b: a + b, map(
             lambda xw: xw[0] * xw[1], zip(input_vec, self.weights)
-            ), 0.0) + self.bias
+            )) + self.bias
         return self.activator(temp)
 
     def train(self, input_vecs, labels, iteration, rate):
