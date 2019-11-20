@@ -11,7 +11,7 @@
     For the output layer, a softmax activation would be a good choice for the output layer because this is a multi-task learning problem. True/False?
     
     - [ ] True
-    - [x] False
+    - [ ] False
     
     > Softmax would be a good choice if one and only one of the possibilities (stop sign, speed bump, pedestrian crossing, green light and red light) was present in each image.
     
@@ -19,7 +19,7 @@
 
     - [ ] 10,000 randomly chosen images
     - [ ] 500 randomly chosen images
-    - [x] 500 images on which the algorithm made a mistake
+    - [ ] 500 images on which the algorithm made a mistake
     - [ ] 10,000 images on which the algorithm made a mistake
     
 4. After working on the data for several weeks, your team ends up with the following data:
@@ -31,7 +31,7 @@
     Because this is a multi-task learning problem, you need to have all your y(i) vectors fully labeled. If one example is equal to [0 ? 1 1 ?] then the learning algorithm will not be able to use that example. True/False?
 
     - [ ] True
-    - [x] False
+    - [ ] False
 
     > As seen in the lecture on multi-task learning, you can compute the cost such that it is not influenced by the fact that some entries haven’t been labeled.
     
@@ -39,7 +39,7 @@
 
     - [ ] Mix all the 100,000 images with the 900,000 images you found online. Shuffle everything. Split the 1,000,000 images dataset into 600,000 for the training set, 200,000 for the dev set and 200,000 for the test set.
     - [ ] Mix all the 100,000 images with the 900,000 images you found online. Shuffle everything. Split the 1,000,000 images dataset into 980,000 for the training set, 10,000 for the dev set and 10,000 for the test set.
-    - [x] Choose the training set to be the 900,000 images from the internet along with 80,000 images from your car’s front-facing camera. The 20,000 remaining images will be split equally in dev and test sets.
+    - [ ] Choose the training set to be the 900,000 images from the internet along with 80,000 images from your car’s front-facing camera. The 20,000 remaining images will be split equally in dev and test sets.
     - [ ] Choose the training set to be the 900,000 images from the internet along with 20,000 images from your car’s front-facing camera. The 80,000 remaining images will be split equally in dev and test sets.
     > As seen in lecture, it is important that your dev and test set have the closest possible distribution to “real”-data. It is also important for the training set to contain enough “real”-data to avoid having a data-mismatch problem.
     
@@ -73,7 +73,7 @@
 
     The results from this analysis implies that the team’s highest priority should be to bring more foggy pictures into the training set so as to address the 8.0% of errors in that category. True/False?
     
-    - [x] False because this would depend on how easy it is to add this data and how much you think your team thinks it’ll help.
+    - [ ] False because this would depend on how easy it is to add this data and how much you think your team thinks it’ll help.
     - [ ] True because it is the largest category of errors. As discussed in lecture, we should prioritize the largest category of error to avoid wasting the team’s time.
     - [ ] True because it is greater than the other error categories added together (8.0 > 4.1+2.2+1.0).
     - [ ] False because data augmentation (synthesizing foggy images by clean/non-foggy images) is more efficient.
@@ -127,13 +127,13 @@
 
 
     - [ ] True
-    - [x] False
+    - [ ] False
     
     >  (A) is an end-to-end approach as it maps directly the input (x) to the output (y).
     
 15. Approach A (in the question above) tends to be more promising than approach B if you have a ________ (fill in the blank).
 
-    - [x] Large training set
+    - [ ] Large training set
     - [ ] Multi-task learning problem.
     - [ ] Large bias problem.
     - [ ] Problem with a high Bayes error.

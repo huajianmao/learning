@@ -2,7 +2,7 @@
 
 1. Having three evaluation metrics makes it harder for you to quickly choose between two different algorithms, and will slow down the speed with which your team can iterate. True/False?
 
-    - [x] True
+    - [ ] True
     - [ ] False
 
 2. If you had the three following models, which one would you choose?
@@ -13,7 +13,7 @@
 
 3. Based on the city’s requests, which of the following would you say is true?
 
-    - [x] Accuracy is an optimizing metric; running time and memory size are a satisficing metrics.
+    - [ ] Accuracy is an optimizing metric; running time and memory size are a satisficing metrics.
     - [ ] Accuracy is a satisficing metric; running time and memory size are an optimizing metric.
     - [ ] Accuracy, running time and memory size are all optimizing metrics because you want to do well on all three.
     - [ ] Accuracy, running time and memory size are all satisficing metrics because you have to do sufficiently well on all three for your system to be acceptable.
@@ -29,7 +29,7 @@
 	  You should not add the citizens’ data to the training set, because this will cause the training and dev/test set distributions to become different, thus hurting dev and test set performance. True/False?
 
     - [ ] True
-    - [x] False
+    - [ ] False
 
 6. One member of the City Council knows a little about machine learning, and thinks you should add the 1,000,000 citizens’ data images to the test set. You object because:
 
