@@ -10,7 +10,7 @@
 
     - [ ] You should implement mini-batch gradient descent without an explicit for-loop over different mini-batches, so that the algorithm processes all mini-batches at the same time (vectorization).
     - [ ] Training one epoch (one pass through the training set) using mini-batch gradient descent is faster than training one epoch using batch gradient descent.
-    - [ ] One iteration of mini-batch gradient descent (computing on a single mini-batch) is faster than one iteration of batch gradient descent.
+    - [x] One iteration of mini-batch gradient descent (computing on a single mini-batch) is faster than one iteration of batch gradient descent.
     
     Note: Vectorization is not for computing several mini-batches in the same time.
     
@@ -54,10 +54,10 @@
 
 9. Suppose batch gradient descent in a deep network is taking excessively long to find a value of the parameters that achieves a small value for the cost function J(W[1],b[1],...,W[L],b[L]). Which of the following techniques could help find parameter values that attain a small value forJ? (Check all that apply)
 
-    - [ ] Try using Adam
-    - [ ] Try better random initialization for the weights
-    - [ ] Try tuning the learning rate α
-    - [ ] Try mini-batch gradient descent
+    - [x] Try using Adam
+    - [x] Try better random initialization for the weights
+    - [x] Try tuning the learning rate α
+    - [x] Try mini-batch gradient descent
     - [ ] Try initializing all the weights to zero
 
 10. Which of the following statements about Adam is False? 
