@@ -2,7 +2,7 @@
 
 1. Having three evaluation metrics makes it harder for you to quickly choose between two different algorithms, and will slow down the speed with which your team can iterate. True/False?
 
-    - [ ] True
+    - [x] True
     - [ ] False
 
 2. If you had the three following models, which one would you choose?
