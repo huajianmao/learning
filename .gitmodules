@@ -7,3 +7,6 @@
 [submodule "books/aaspark"]
 	path = books/aaspark
 	url = https://github.com/huajianmao/aaspark
+[submodule "books/rustbook"]
+	path = books/rustbook
+	url = git@github.com:huajianmao/rustbook
